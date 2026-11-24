@@ -29,7 +29,7 @@ void main() {
 
     await tester.fling(find.byType(PageView), const Offset(-400, 0), 1000);
     await tester.pumpAndSettle();
-    expect(find.text('Ratio'), findsOneWidget);
+    expect(find.text('Brew Calculator'), findsOneWidget);
     expect(find.text('240g'), findsOneWidget); // 15g at the default 1:16
   });
 

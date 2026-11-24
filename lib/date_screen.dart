@@ -91,8 +91,7 @@ class _DateScreenState extends State<DateScreen> {
       children: [
         Row(
           children: [
-            Text('Rest', style: t.headlineMedium),
-            const Spacer(),
+            Expanded(child: Text('Rest Calculator', style: t.headlineMedium)),
             TextButton.icon(
               onPressed: _inputs.isEmpty ? null : _reset,
               icon: const Icon(Icons.restart_alt),
@@ -192,7 +191,7 @@ class _FieldTile extends StatelessWidget {
     } else {
       main = plural(value as int, 'day');
       sub = field == DateField.frozen && result.stillFrozen
-          ? 'still frozen, counting to today'
+          ? 'Frozen'
           : null;
     }
 
@@ -270,8 +269,7 @@ class _FieldTile extends StatelessWidget {
   }
 }
 
-/// Inline scroll wheels. Scrolling sets the value right away; Set locks in
-/// what's showing (handy for keeping a calculated value or today's date).
+/// Inline scroll wheels. Scrolling sets the value right away.
 class _Picker extends StatefulWidget {
   final bool isDate;
   final Object initial;
@@ -406,10 +404,6 @@ class _PickerState extends State<_Picker> {
         const Spacer(),
         if (widget.entered)
           TextButton(onPressed: widget.onClear, child: const Text('Clear')),
-        FilledButton.tonal(
-          onPressed: () => widget.onSet(widget.isDate ? _date : _count),
-          child: const Text('Set'),
-        ),
       ],
     );
 

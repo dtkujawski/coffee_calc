@@ -12,25 +12,52 @@ class RatioScreen extends StatefulWidget {
 }
 
 class _RatioScreenState extends State<RatioScreen> {
-  static const _doseKey = 'dose', _ratioKey = 'ratio';
+  static const _doseKey = 'dose', _ratioKey = 'ratio', _countKey = 'pourCount';
   late int _dose;
   late int _ratio;
+  late int _count;
 
   @override
   void initState() {
     super.initState();
     _dose = (widget.prefs.getInt(_doseKey) ?? defaultDose).clamp(minDose, maxDose);
     _ratio = (widget.prefs.getInt(_ratioKey) ?? defaultRatio).clamp(minRatio, maxRatio);
+    _count = widget.prefs.getInt(_countKey) ?? defaultPourCount;
+    if (!pourCounts.contains(_count)) _count = defaultPourCount;
+  }
+
+  bool get _isDefault =>
+      _dose == defaultDose && _ratio == defaultRatio && _count == defaultPourCount;
+
+  void _reset() {
+    setState(() {
+      _dose = defaultDose;
+      _ratio = defaultRatio;
+      _count = defaultPourCount;
+    });
+    widget.prefs
+      ..remove(_doseKey)
+      ..remove(_ratioKey)
+      ..remove(_countKey);
   }
 
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
-    final p = pours(_dose, _ratio);
+    final p = pours(_dose, _ratio, _count);
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
       children: [
-        Text('Ratio', style: t.headlineMedium),
+        Row(
+          children: [
+            Expanded(child: Text('Brew Calculator', style: t.headlineMedium)),
+            TextButton.icon(
+              onPressed: _isDefault ? null : _reset,
+              icon: const Icon(Icons.restart_alt),
+              label: const Text('Reset'),
+            ),
+          ],
+        ),
         const SizedBox(height: 24),
         _SliderRow(
           label: 'Dose',
@@ -62,10 +89,26 @@ class _RatioScreenState extends State<RatioScreen> {
             },
           ),
         ),
+        Row(
+          children: [
+            Expanded(child: Text('Pours', style: t.titleMedium)),
+            DropdownButton<int>(
+              value: _count,
+              borderRadius: BorderRadius.circular(12),
+              items: [
+                for (final c in pourCounts)
+                  DropdownMenuItem(value: c, child: Text('$c pours')),
+              ],
+              onChanged: (c) {
+                if (c == null) return;
+                setState(() => _count = c);
+                widget.prefs.setInt(_countKey, c);
+              },
+            ),
+          ],
+        ),
         const SizedBox(height: 16),
-        _PourRow(label: 'Bloom', to: p.bloom, add: p.bloom),
-        _PourRow(label: '1st pour', to: p.first, add: p.first - p.bloom),
-        _PourRow(label: '2nd pour', to: p.second, add: p.second - p.first),
+        for (final pour in p) _PourRow(label: pour.label, to: pour.to, add: pour.add),
       ],
     );
   }
@@ -123,10 +166,16 @@ class _PourRow extends StatelessWidget {
           textBaseline: TextBaseline.alphabetic,
           children: [
             Expanded(child: Text(label, style: t.titleMedium)),
-            Text('+${add}g  ',
-                style: t.bodyMedium?.copyWith(color: cs.onSurfaceVariant)),
-            Text('${to}g',
-                style: t.headlineSmall?.copyWith(fontWeight: FontWeight.w600)),
+            Expanded(
+              child: Text('+${add}g',
+                  textAlign: TextAlign.center,
+                  style: t.titleMedium?.copyWith(color: cs.onSurfaceVariant)),
+            ),
+            Expanded(
+              child: Text('${to}g',
+                  textAlign: TextAlign.right,
+                  style: t.headlineSmall?.copyWith(fontWeight: FontWeight.w600)),
+            ),
           ],
         ),
       ),
