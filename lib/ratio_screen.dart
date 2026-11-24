@@ -91,7 +91,7 @@ class _RatioScreenState extends State<RatioScreen> {
         ),
         Row(
           children: [
-            Expanded(child: Text('Pours', style: t.titleMedium)),
+            Expanded(child: Text('Recipe', style: t.titleMedium)),
             DropdownButton<int>(
               value: _count,
               borderRadius: BorderRadius.circular(12),

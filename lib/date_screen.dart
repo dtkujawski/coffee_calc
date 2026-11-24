@@ -190,9 +190,7 @@ class _FieldTile extends StatelessWidget {
       sub = ago(value, today);
     } else {
       main = plural(value as int, 'day');
-      sub = field == DateField.frozen && result.stillFrozen
-          ? 'Frozen'
-          : null;
+      sub = null;
     }
 
     return Card(
