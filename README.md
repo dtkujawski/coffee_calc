@@ -14,10 +14,9 @@ sliders, plus a Recipe dropdown. Pours are running scale totals:
 
 ## Build and install
 
-```sh
-flutter test
-flutter build apk --release --target-platform android-arm64
-adb install -r build/app/outputs/flutter-apk/app-release.apk
+```powershell
+flutter build apk --release
+flutter install --release        # phone plugged in
 ```
 
 Or run `flutter run --release` with the phone plugged in. Each push also builds the
