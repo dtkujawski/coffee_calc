@@ -17,7 +17,7 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
     await tester.pumpWidget(CoffeeCalcApp(prefs: prefs));
 
-    expect(find.text('Set a roast date to start'), findsOneWidget);
+    expect(find.text('Total'), findsOneWidget);
 
     await tester.tap(find.text('Roasted'));
     await tester.pumpAndSettle();
@@ -30,7 +30,7 @@ void main() {
     await tester.fling(find.byType(PageView), const Offset(-400, 0), 1000);
     await tester.pumpAndSettle();
     expect(find.text('Brew Calculator'), findsOneWidget);
-    expect(find.text('240g'), findsOneWidget); // 15g at the default 1:16
+    expect(find.text('255g'), findsOneWidget); // 15g at the default 1:17
   });
 
   testWidgets('restores the last date inputs', (tester) async {

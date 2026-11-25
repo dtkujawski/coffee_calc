@@ -2,7 +2,7 @@
 library;
 
 const minDose = 12, maxDose = 30, defaultDose = 15;
-const minRatio = 13, maxRatio = 20, defaultRatio = 16;
+const minRatio = 13, maxRatio = 20, defaultRatio = 17;
 const pourCounts = [2, 3];
 const defaultPourCount = 3;
 

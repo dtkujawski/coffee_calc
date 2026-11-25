@@ -472,13 +472,6 @@ class _TotalCard extends StatelessWidget {
     final t = Theme.of(context).textTheme;
     final total = result.total;
     final error = result.errors.contains(DateField.total);
-    String? detail;
-    if (total != null && result.roasted != null) {
-      final since = daysBetween(result.roasted!, today);
-      detail = result.frozen == null
-          ? '${plural(since, 'day')} since roast'
-          : '${plural(since, 'day')} since roast − ${result.frozen} frozen';
-    }
     return Card(
       elevation: 0,
       color: error ? cs.errorContainer : cs.tertiaryContainer,
@@ -488,15 +481,8 @@ class _TotalCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Total rest',
-                      style: t.titleMedium?.copyWith(color: cs.onTertiaryContainer)),
-                  Text(detail ?? 'Set a roast date to start',
-                      style: t.bodySmall?.copyWith(color: cs.onTertiaryContainer)),
-                ],
-              ),
+              child: Text('Total',
+                  style: t.titleMedium?.copyWith(color: cs.onTertiaryContainer)),
             ),
             Text(total == null ? '—' : plural(total, 'day'),
                 style: t.headlineMedium?.copyWith(
