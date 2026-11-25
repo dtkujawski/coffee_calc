@@ -14,11 +14,6 @@ def pile(canvas, cx, base_y, width):
     """Pastes the bean pile photo centered at cx with its bottom at base_y."""
     h = round(PILE.height * width / PILE.width)
     p = PILE.resize((round(width), h), Image.LANCZOS)
-    # Soft shadow under the pile.
-    sh = Image.new('RGBA', canvas.size, (0, 0, 0, 0))
-    ImageDraw.Draw(sh).ellipse((cx - width * .48, base_y - width * .05, cx + width * .48, base_y + width * .05),
-                               fill=(40, 22, 10, 150))
-    canvas.alpha_composite(sh.filter(ImageFilter.GaussianBlur(width * .03)))
     canvas.alpha_composite(p, (round(cx - width / 2), round(base_y - h)))
 
 def text(canvas, s, font, cx, y):
@@ -31,10 +26,10 @@ def render(size, fontpath, bg=True):
     # Splash icon: 288dp square, content inside the central 192dp circle.
     k = size / 1152
     c = Image.new('RGBA', (size, size), BG + (255,) if bg else (0, 0, 0, 0))
-    pile(c, size / 2, 560 * k, 560 * k)
+    pile(c, size / 2, 580 * k, 560 * k)
     f1 = ImageFont.truetype(fontpath, int(118 * k))
     f2 = ImageFont.truetype(fontpath, int(84 * k))
-    y = text(c, 'Coffee', f1, size / 2, 635 * k)
+    y = text(c, 'Coffee', f1, size / 2, 605 * k)
     text(c, 'Calculator', f2, size / 2, y + 22 * k)
     return c
 
