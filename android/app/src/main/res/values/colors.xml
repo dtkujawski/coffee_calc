@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Coffee brown behind the splash artwork. -->
+    <color name="splash_bg">#FF6F4E37</color>
+</resources>
